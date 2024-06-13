@@ -16,6 +16,9 @@ type DecimalSource interface {
 	decimalSource()
 }
 
+// D is a function that creates a new Decimal instance from a given source.
+// The source can be another *Decimal, a string, or any numeric type.
+// The function returns a pointer to the newly created Decimal instance.
 func D(source interface{}) *Decimal {
 	return decimalFromSource(source)
 }
@@ -26,8 +29,28 @@ func decimalFromSource(value interface{}) *Decimal {
 		return decimalFromDecimal(v)
 	case float64:
 		return decimalFromFloat64(v)
+	case float32:
+		return decimalFromFloat64(float64(v))
+	case int:
+		return decimalFromFloat64(float64(v))
+	case int8:
+		return decimalFromFloat64(float64(v))
+	case int16:
+		return decimalFromFloat64(float64(v))
+	case int32:
+		return decimalFromFloat64(float64(v))
+	case int64:
+		return decimalFromFloat64(float64(v))
+	case uint:
+		return decimalFromFloat64(float64(v))
+	case uint8:
+		return decimalFromFloat64(float64(v))
+	case uint16:
+		return decimalFromFloat64(float64(v))
+	case uint32:
+		return decimalFromFloat64(float64(v))
 	case uint64:
-
+		return decimalFromFloat64(float64(v))
 	case string:
 		return decimalFromString(v, false)
 	}

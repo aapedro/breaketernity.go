@@ -50,6 +50,131 @@ func sign(x float64) float64 {
 	return math.Copysign(1, x)
 }
 
+func excessSlog(d *Decimal, base *Decimal, linear bool) (*Decimal, int) {
+	nBase := base.ToFloat64()
+	if nBase == 1 || nBase <= 0 {
+		return dFC_NN(math.NaN(), math.NaN(), math.NaN()), 0
+	}
+	if nBase > 1.44466786100976613366 {
+		return d.Slog(base, 100, linear), 0
+	}
+	negLnBase := base.Ln().Neg()
+	lower := negLnBase.LambertW(true).Divide(negLnBase)
+	upper := dInf
+	if nBase > 1 {
+		upper = negLnBase.LambertW(false).Divide(negLnBase)
+	}
+	if nBase > 1.444667861009766133 {
+		lower = decimalFromFloat64(math.E)
+		upper = decimalFromFloat64(math.E)
+	}
+	if d.Lt(lower) {
+		return d.Slog(base, 100, linear), 0
+	}
+	if d.Eq(lower) {
+		return dFC_NN(1, math.Inf(1), math.Inf(1)), 0
+	}
+	if d.Eq(upper) {
+		return dFC_NN(1, math.Inf(-1), math.Inf(-1)), 0
+	}
+	if d.Gt(upper) {
+		slogZero := upper.Multiply(D(2))
+		slogOne := base.Pow(slogZero)
+		estimate := 0.
+		if d.Gte(slogZero) && d.Lt(slogOne) {
+			estimate = 0.
+		} else if d.Gte(slogOne) {
+			payload := slogOne
+			estimate = 1.
+			for payload.Lt(d) {
+				payload = base.Pow(payload)
+				estimate += 1
+				if payload.layer > 3 {
+					layersLeft := math.Floor(d.layer - payload.layer)
+					payload = base.IteratedExp(layersLeft, payload, linear)
+				}
+			}
+			if payload.Gt(d) {
+				payload = payload.Log(base)
+				estimate -= 1
+			}
+		} else if d.Lt(slogZero) {
+			payload := slogZero
+			estimate = 0.
+			for payload.Gt(d) {
+				payload = payload.Log(base)
+				estimate -= 1
+			}
+		}
+		fracHeight := 0.
+		tested := 0.
+		stepSize := 0.5
+		towerTop := slogZero
+		guess := dZero
+
+		for stepSize > 1e-16 {
+			tested = fracHeight + stepSize
+			towerTop = slogZero.Pow(D(1 - tested)).Multiply(slogOne.Pow(D(tested)))
+			guess = IteratedExp(base, estimate, towerTop, false)
+			if guess.Eq(d) {
+				fracHeight *= stepSize
+			}
+			stepSize /= 2
+		}
+		if guess.NeqTolerance(d, 1e-7) {
+			return dFC_NN(math.NaN(), math.NaN(), math.NaN()), 0
+		}
+		return decimalFromFloat64(estimate + fracHeight), 2
+	}
+	if d.Lt(upper) && d.Gt(lower) {
+		slogZero := lower.Multiply(upper).Sqrt()
+		slogOne := base.Pow(slogZero)
+		estimate := 0.
+		if d.Lte(slogZero) && d.Gt(slogOne) {
+			estimate = 0.
+		} else if d.Lte(slogOne) {
+			payload := slogOne
+			estimate = 1
+			for payload.Gt(d) {
+				payload = base.Pow(payload)
+				estimate += 1
+			}
+			if payload.Lt(d) {
+				payload = payload.Log(base)
+				estimate -= 1
+			}
+		} else if d.Gt(slogZero) {
+			payload := slogZero
+			estimate = 0.
+			for payload.Lt(d) {
+				payload = payload.Log(base)
+				estimate -= 1
+			}
+		}
+
+		fracHeight := 0.
+		tested := 0.
+		stepSize := 0.5
+		towerTop := slogZero
+		guess := dZero
+		for stepSize > 1e-16 {
+			tested = fracHeight + stepSize
+			towerTop = slogZero.Pow(D(1 - tested)).Multiply(slogOne.Pow(D(tested)))
+			guess = IteratedExp(base, estimate, towerTop, false)
+			if guess.Eq(d) {
+				return decimalFromFloat64(estimate + tested), 1
+			}
+			stepSize /= 2
+		}
+		if guess.NeqTolerance(d, 1e-7) {
+			return dFC_NN(math.NaN(), math.NaN(), math.NaN()), 0
+		}
+		return decimalFromFloat64(estimate + fracHeight), 1
+	}
+
+	panic("Unhandled behavior in excessSlog")
+}
+
 func slogCritical(base float64, height float64) float64 {
 	if base > 10 {
 		return height - 1
