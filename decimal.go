@@ -255,10 +255,10 @@ func decimalFromString(s string, linearhyper4 bool) *Decimal {
 	return result
 }
 
-func dFC_NN(sign float64, mag, layer float64) *Decimal {
+func dFC_NN(sign float64, layer float64, mag float64) *Decimal {
 	return &Decimal{sign: sign, layer: layer, mag: mag}
 }
-func dFC(sign float64, mag, layer float64) *Decimal {
+func dFC(sign float64, layer float64, mag float64) *Decimal {
 	d := Decimal{sign: sign, layer: layer, mag: mag}
 	d.Normalize()
 	return &d
