@@ -108,7 +108,151 @@ func decimalFromString(s string, linearhyper4 bool) *Decimal {
 			return &Decimal{sign: result.sign, layer: result.layer, mag: result.mag}
 		}
 	}
-	return &Decimal{sign: 1, layer: 0, mag: 0}
+
+	powParts := strings.Split(s, "^")
+	if len(powParts) == 2 {
+		base, _ := strconv.ParseFloat(powParts[0], 64)
+		exponent, _ := strconv.ParseFloat(powParts[1], 64)
+		if !math.IsInf(base, 0) && !math.IsInf(exponent, 0) {
+			result := Pow(D(base), D(exponent))
+			return &Decimal{sign: result.sign, layer: result.layer, mag: result.mag}
+		}
+	}
+
+	s = strings.ToLower(strings.TrimSpace(s))
+
+	ptParts := strings.Split(s, "pt")
+	if len(ptParts) == 2 {
+		base := 10.0
+		negative := false
+		if ptParts[0][0] == '-' {
+			negative = true
+			ptParts[0] = ptParts[0][1:]
+		}
+		height, _ := strconv.ParseFloat(ptParts[0], 64) // Error ignored
+		ptParts[1] = strings.Replace(ptParts[1], "(", "", -1)
+		ptParts[1] = strings.Replace(ptParts[1], ")", "", -1)
+		payload, _ := strconv.ParseFloat(ptParts[1], 64) // Error ignored
+		if math.IsInf(payload, 0) {
+			payload = 1
+		}
+		if !math.IsInf(base, 0) && !math.IsInf(height, 0) {
+			result := Tetrate(D(base), height, D(payload), linearhyper4)
+			if negative {
+				result.sign *= -1
+			}
+			return &Decimal{sign: result.sign, layer: result.layer, mag: result.mag}
+		}
+	}
+
+	ptParts = strings.Split(s, "p")
+	if len(ptParts) == 2 {
+		base := 10.0
+		negative := false
+		if ptParts[0][0] == '-' {
+			negative = true
+			ptParts[0] = ptParts[0][1:]
+		}
+		height, _ := strconv.ParseFloat(ptParts[0], 64) // Error ignored
+		ptParts[1] = strings.Replace(ptParts[1], "(", "", -1)
+		ptParts[1] = strings.Replace(ptParts[1], ")", "", -1)
+		payload, _ := strconv.ParseFloat(ptParts[1], 64) // Error ignored
+		if math.IsInf(payload, 0) {
+			payload = 1
+		}
+		if !math.IsInf(base, 0) && !math.IsInf(height, 0) {
+			result := Tetrate(D(base), height, D(payload), linearhyper4)
+			if negative {
+				result.sign *= -1
+			}
+			return &Decimal{sign: result.sign, layer: result.layer, mag: result.mag}
+		}
+	}
+
+	fParts := strings.Split(s, "f")
+	if len(fParts) == 2 {
+		base := 10.0
+		negative := false
+		if fParts[0][0] == '-' {
+			negative = true
+			fParts[0] = fParts[0][1:]
+		}
+		fParts[0] = strings.Replace(fParts[0], "(", "", -1)
+		fParts[0] = strings.Replace(fParts[0], ")", "", -1)
+		payload, _ := strconv.ParseFloat(fParts[0], 64) // Error ignored
+		fParts[1] = strings.Replace(fParts[1], "(", "", -1)
+		fParts[1] = strings.Replace(fParts[1], ")", "", -1)
+		height, _ := strconv.ParseFloat(fParts[1], 64) // Error ignored
+		if math.IsInf(payload, 0) {
+			payload = 1
+		}
+		if !math.IsInf(base, 0) && !math.IsInf(height, 0) {
+			result := Tetrate(D(base), height, D(payload), linearhyper4)
+			if negative {
+				result.sign *= -1
+			}
+			return &Decimal{sign: result.sign, layer: result.layer, mag: result.mag}
+		}
+	}
+
+	eParts := strings.Split(s, "e")
+	eCount := len(eParts) - 1
+
+	// Handle numbers that are exactly floats (0 or 1 "e"s).
+	if eCount == 0 {
+		numberAttempt, _ := strconv.ParseFloat(s, 64)
+		if !math.IsInf(numberAttempt, 0) {
+			if !math.IsInf(numberAttempt, 0) && !math.IsNaN(numberAttempt) {
+				return decimalFromFloat64(numberAttempt)
+			}
+		}
+	} else if eCount == 1 {
+		numberAttempt, _ := strconv.ParseFloat(s, 64)
+		if !math.IsInf(numberAttempt, 0) && numberAttempt != 0 {
+			return decimalFromFloat64(numberAttempt)
+		}
+	}
+
+	// TODO: (e^N)X format
+
+	if eCount < 1 {
+		return &Decimal{sign: 0, layer: 0, mag: 0}
+	}
+
+	mantissa, _ := strconv.ParseFloat(eParts[0], 64)
+	if mantissa == 0 {
+		return &Decimal{sign: 0, layer: 0, mag: 0}
+	}
+
+	exponent, _ := strconv.ParseFloat(eParts[len(eParts)-1], 64)
+	if eCount >= 2 {
+		me, _ := strconv.ParseFloat(eParts[len(eParts)-2], 64)
+		if !math.IsInf(me, 0) {
+			exponent *= sign(me)
+			exponent += fMagLog10(me)
+		}
+	}
+
+	result := &Decimal{sign: sign(mantissa), layer: float64(eCount), mag: 0}
+	if math.IsInf(mantissa, 0) {
+		if eParts[0] == "-" {
+			return &Decimal{sign: -1, layer: 0, mag: 0}
+		} else {
+			return &Decimal{sign: 1, layer: 0, mag: 0}
+		}
+	} else if eCount == 1 {
+		return &Decimal{sign: sign(mantissa), layer: 0, mag: exponent + math.Log10(math.Abs(mantissa))}
+	} else {
+		if eCount == 2 {
+			result2 := Multiply(dFC(1, 2, exponent), D(mantissa))
+			return result2
+		} else {
+			result.mag = exponent
+		}
+	}
+
+	result = result.Normalize()
+	return result
 }
 
 func dFC_NN(sign float64, mag, layer float64) *Decimal {
