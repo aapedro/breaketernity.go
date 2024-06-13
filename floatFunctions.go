@@ -48,8 +48,8 @@ func fGamma(n float64) float64 {
 	return math.Exp(l) / scal1
 }
 
-const _EXPN1 = 0.36787944117144232159553 // exp(-1)
-const OMEGA = 0.56714329040978387299997  // W(1, 0)
+const EXPN1 = 0.36787944117144232159553 // exp(-1)
+const OMEGA = 0.56714329040978387299997 // W(1, 0)
 func fLambertW(z float64, tol float64, principal bool) float64 {
 	var w, wn float64
 

@@ -75,12 +75,12 @@ func decimalFromString(s string, linearhyper4 bool) *Decimal {
 
 	pentationParts := strings.Split(s, "^^^")
 	if len(pentationParts) == 2 {
-		base, _ := strconv.ParseFloat(pentationParts[0], 10)
-		height, _ := strconv.ParseFloat(pentationParts[1], 10)
+		base, _ := strconv.ParseFloat(pentationParts[0], 64)
+		height, _ := strconv.ParseFloat(pentationParts[1], 64)
 		heightParts := strings.Split(pentationParts[1], ";")
 		payload := float64(1)
 		if len(heightParts) == 2 {
-			payload, _ = strconv.ParseFloat(heightParts[1], 10)
+			payload, _ = strconv.ParseFloat(heightParts[1], 64)
 			if math.IsInf(payload, 0) {
 				payload = 1
 			}
@@ -93,12 +93,12 @@ func decimalFromString(s string, linearhyper4 bool) *Decimal {
 
 	tetrationParts := strings.Split(s, "^^")
 	if len(tetrationParts) == 2 {
-		base, _ := strconv.ParseFloat(tetrationParts[0], 10)
-		height, _ := strconv.ParseFloat(tetrationParts[1], 10)
+		base, _ := strconv.ParseFloat(tetrationParts[0], 64)
+		height, _ := strconv.ParseFloat(tetrationParts[1], 64)
 		heightParts := strings.Split(tetrationParts[1], ";")
 		payload := float64(1)
 		if len(heightParts) == 2 {
-			payload, _ = strconv.ParseFloat(heightParts[1], 10)
+			payload, _ = strconv.ParseFloat(heightParts[1], 64)
 			if math.IsInf(payload, 0) {
 				payload = 1
 			}
@@ -120,9 +120,9 @@ func dFC(sign float64, mag, layer float64) *Decimal {
 	return &d
 }
 
-func dME_NN(mantissa, exponent float64) *Decimal {
-	return &Decimal{sign: sign(mantissa), layer: 1, mag: exponent + math.Log10(math.Abs(mantissa))}
-}
+//	func dME_NN(mantissa, exponent float64) *Decimal {
+//		return &Decimal{sign: sign(mantissa), layer: 1, mag: exponent + math.Log10(math.Abs(mantissa))}
+//	}
 func dME(mantissa, exponent float64) *Decimal {
 	d := Decimal{sign: sign(mantissa), layer: 1, mag: exponent + math.Log10(math.Abs(mantissa))}
 	d.Normalize()
@@ -150,7 +150,10 @@ func (d *Decimal) GetMantissa() float64 {
 }
 func (d *Decimal) SetMantissa(value float64) {
 	if d.layer <= 2 {
-		d = dME(value, d.GetExponent())
+		newD := dME(value, d.GetExponent())
+		d.sign = newD.sign
+		d.layer = newD.layer
+		d.mag = newD.mag
 	} else {
 		// lol
 		d.sign = sign(value)
@@ -175,7 +178,10 @@ func (d *Decimal) GetExponent() float64 {
 	}
 }
 func (d *Decimal) SetExponent(value float64) {
-	d = dME(d.GetMantissa(), value)
+	newD := dME(d.GetMantissa(), value)
+	d.sign = newD.sign
+	d.layer = newD.layer
+	d.mag = newD.mag
 }
 
 func (d *Decimal) GetSign() float64 {

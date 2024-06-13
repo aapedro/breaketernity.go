@@ -936,7 +936,7 @@ func (d *Decimal) IsNaN() bool {
 	return math.IsNaN(d.layer) || math.IsNaN(d.mag) || math.IsNaN(d.sign)
 }
 
-func isInf(d *Decimal) bool {
+func IsInf(d *Decimal) bool {
 	return d.IsInf()
 }
 func (d *Decimal) IsInf() bool {
@@ -1160,9 +1160,6 @@ func (d *Decimal) LayerAdd(diff *Decimal, base *Decimal, linear bool) *Decimal {
 	}
 }
 
-func slogInternal(d *Decimal, base *Decimal, linear bool) *Decimal {
-	return d.slogInternal(base, linear)
-}
 func (d *Decimal) slogInternal(base *Decimal, linear bool) *Decimal {
 	if base.Lte(dZero) {
 		return dFC_NN(math.NaN(), math.NaN(), math.NaN())

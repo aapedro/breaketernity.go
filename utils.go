@@ -95,7 +95,10 @@ func excessSlog(d *Decimal, base *Decimal, linear bool) (*Decimal, int) {
 				}
 			}
 			if payload.Gt(d) {
-				payload = payload.Log(base)
+				newPayload := payload.Log(base)
+				payload.sign = newPayload.sign
+				payload.layer = newPayload.layer
+				payload.mag = newPayload.mag
 				estimate -= 1
 			}
 		} else if d.Lt(slogZero) {
@@ -140,7 +143,10 @@ func excessSlog(d *Decimal, base *Decimal, linear bool) (*Decimal, int) {
 				estimate += 1
 			}
 			if payload.Lt(d) {
-				payload = payload.Log(base)
+				newPayload := payload.Log(base)
+				payload.sign = newPayload.sign
+				payload.layer = newPayload.layer
+				payload.mag = newPayload.mag
 				estimate -= 1
 			}
 		} else if d.Gt(slogZero) {
