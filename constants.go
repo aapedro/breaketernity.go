@@ -34,7 +34,6 @@ var dNegInf *Decimal = dFC(-1, math.Inf(1), math.Inf(1))
 
 var dZero *Decimal = dFC_NN(0, 0, 0)
 
-// aaaaaaaaaaaaaaaaaaaa
 var CRITICAL_HEADERS = []float64{2, math.E, 3, 4, 5, 6, 7, 8, 9, 10}
 
 var CRITICAL_TETR_VALUES = [][]float64{
