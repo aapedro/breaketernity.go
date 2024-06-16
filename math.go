@@ -1,4 +1,4 @@
-package breaketernitygo
+package breaketernity
 
 import (
 	"math"
