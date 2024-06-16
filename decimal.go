@@ -245,7 +245,7 @@ func decimalFromString(s string, linearhyper4 bool) *Decimal {
 			return &Decimal{sign: 1, layer: 0, mag: 0}
 		}
 	} else if eCount == 1 {
-		return &Decimal{sign: sign(mantissa), layer: 0, mag: exponent + math.Log10(math.Abs(mantissa))}
+		return &Decimal{sign: sign(mantissa), layer: 1, mag: exponent + math.Log10(math.Abs(mantissa))}
 	} else {
 		if eCount == 2 {
 			result2 := Multiply(dFC(1, 2, exponent), D(mantissa))

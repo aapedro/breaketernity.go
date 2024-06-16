@@ -506,7 +506,7 @@ func (d *Decimal) PowBase10() *Decimal {
 			if a.sign == 0 {
 				return dFC_NN(1, 0, 1)
 			} else {
-				return dFC_NN(a.sign, a.layer+1, math.Log10(a.mag))
+				return dFC_NN(a.sign, a.layer+1, a.mag)
 			}
 		}
 	}
