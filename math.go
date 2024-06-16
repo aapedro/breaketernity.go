@@ -5,8 +5,8 @@ import (
 )
 
 // Cmp returns 1 if d > other, -1 if d < other, and 0 if d == other.
-func Cmp(d *Decimal, other *Decimal) int {
-	return d.Cmp(other)
+func Cmp[DS DecimalSource](d DS, other DS) int {
+	return D(d).Cmp(D(other))
 }
 
 // Cmp returns 1 if d > other, -1 if d < other, and 0 if d == other.
@@ -21,8 +21,8 @@ func (d *Decimal) Cmp(other *Decimal) int {
 }
 
 // CmpAbs returns 1 if |d| > |other|, -1 if |d| < |other| and 0 if |d| == |other|.
-func CmpAbs(d *Decimal, other *Decimal) int {
-	return d.CmpAbs(other)
+func CmpAbs[DS DecimalSource](d DS, other DS) int {
+	return D(d).CmpAbs(D(other))
 }
 
 // CmpAbs returns 1 if |d| > |other|, -1 if |d| < |other| and 0 if |d| == |other|.
@@ -61,8 +61,8 @@ func (d *Decimal) CmpAbs(other *Decimal) int {
 }
 
 // Eq compares two Decimal values and returns true if they are equal, false otherwise.
-func Eq(d *Decimal, other *Decimal) bool {
-	return d.Eq(other)
+func Eq[DS DecimalSource](d DS, other DS) bool {
+	return D(d).Eq(D(other))
 }
 
 // Eq compares two Decimal values and returns true if they are equal, false otherwise.
@@ -71,8 +71,8 @@ func (d *Decimal) Eq(other *Decimal) bool {
 }
 
 // Neq compares two Decimal values and returns true if they are not equal, false otherwise.
-func Neq(d *Decimal, other *Decimal) bool {
-	return d.Neq(other)
+func Neq[DS DecimalSource](d DS, other DS) bool {
+	return D(d).Neq(D(other))
 }
 
 // Neq compares two Decimal values and returns true if they are not equal, false otherwise.
@@ -81,8 +81,8 @@ func (d *Decimal) Neq(other *Decimal) bool {
 }
 
 // Lt compares two Decimal values and returns true if d < other, false otherwise.
-func Lt(d *Decimal, other *Decimal) bool {
-	return d.Lt(other)
+func Lt[DS DecimalSource](d DS, other DS) bool {
+	return D(d).Lt(D(other))
 }
 
 // Lt compares two Decimal values and returns true if d < other, false otherwise.
@@ -91,8 +91,8 @@ func (d *Decimal) Lt(other *Decimal) bool {
 }
 
 // Lte compares two Decimal values and returns true if d <= other, false otherwise.
-func Lte(d *Decimal, other *Decimal) bool {
-	return d.Lte(other)
+func Lte[DS DecimalSource](d DS, other DS) bool {
+	return D(d).Lte(D(other))
 }
 
 // Lte compares two Decimal values and returns true if d <= other, false otherwise.
@@ -101,8 +101,8 @@ func (d *Decimal) Lte(other *Decimal) bool {
 }
 
 // Gt compares two Decimal values and returns true if d > other, false otherwise.
-func Gt(d *Decimal, other *Decimal) bool {
-	return d.Gt(other)
+func Gt[DS DecimalSource](d DS, other DS) bool {
+	return D(d).Gt(D(other))
 }
 
 // Gt compares two Decimal values and returns true if d > other, false otherwise.
@@ -111,8 +111,8 @@ func (d *Decimal) Gt(other *Decimal) bool {
 }
 
 // Gte compares two Decimal values and returns true if d >= other, false otherwise.
-func Gte(d *Decimal, other *Decimal) bool {
-	return d.Gte(other)
+func Gte[DS DecimalSource](d DS, other DS) bool {
+	return D(d).Gte(D(other))
 }
 
 // Gte compares two Decimal values and returns true if d >= other, false otherwise.

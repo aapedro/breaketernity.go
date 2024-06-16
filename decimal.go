@@ -13,18 +13,18 @@ type Decimal struct {
 }
 
 type DecimalSource interface {
-	decimalSource()
+	~*Decimal | float64 | float32 | int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | string
 }
 
 // D is a function that creates a new Decimal instance from a given source.
 // The source can be another *Decimal, a string, or any numeric type.
 // The function returns a pointer to the newly created Decimal instance.
-func D(source interface{}) *Decimal {
+func D[S DecimalSource](source S) *Decimal {
 	return decimalFromSource(source)
 }
 
-func decimalFromSource(value interface{}) *Decimal {
-	switch v := value.(type) {
+func decimalFromSource[DS DecimalSource](value DS) *Decimal {
+	switch v := any(value).(type) {
 	case *Decimal:
 		return decimalFromDecimal(v)
 	case float64:
