@@ -1,4 +1,4 @@
-# break_eternity.js
+# breaketernity.go
 
 A Go numerical package to represent numbers as large as 10^^1e308 and as 'small' as 10^-(10^^1e308). Based on Patashu's break_eternity.js ( https://github.com/Patashu/break_eternity.js ).
 
