@@ -1,3 +1,3 @@
-module github.com/aapedro/break_eternity.go
+module github.com/aapedro/breaketernity.go
 
 go 1.22.3
