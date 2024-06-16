@@ -106,7 +106,7 @@ func (d *Decimal) ToStringWithNDecimalPlaces(places int) string {
 	layerString := strconv.FormatFloat(decimalPlaces(d.layer, places), 'g', -1, 64)
 	if d.layer == 0 {
 		if (d.mag < 1e21 && d.mag > 1e-7) || d.mag == 0 {
-			numberToFixedString(d.sign*d.mag, places)
+			return numberToFixedString(d.sign*d.mag, places)
 		}
 		return mString + "e" + eString
 	} else if d.layer == 1 {
