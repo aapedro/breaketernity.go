@@ -23,6 +23,10 @@ func D[S DecimalSource](source S) *Decimal {
 	return decimalFromSource(source)
 }
 
+func DFC(sign float64, layer float64, mag float64) *Decimal {
+	return dFC(sign, layer, mag)
+}
+
 func decimalFromSource[DS DecimalSource](value DS) *Decimal {
 	switch v := any(value).(type) {
 	case *Decimal:
