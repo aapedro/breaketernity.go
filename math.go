@@ -121,8 +121,8 @@ func (d *Decimal) Gte(other *Decimal) bool {
 }
 
 // Max returns the maximum of two Decimal values.
-func Max(d *Decimal, other *Decimal) *Decimal {
-	return d.Max(other)
+func Max[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Max(D(other))
 }
 
 // Max returns the maximum of two Decimal values.
@@ -135,8 +135,8 @@ func (d *Decimal) Max(other *Decimal) *Decimal {
 }
 
 // Min returns the minimum of two Decimal values.
-func Min(d *Decimal, other *Decimal) *Decimal {
-	return d.Min(other)
+func Min[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Min(D(other))
 }
 
 // Min returns the minimum of two Decimal values.
@@ -149,8 +149,8 @@ func (d *Decimal) Min(other *Decimal) *Decimal {
 }
 
 // MaxAbs returns the Decimal with the maximum absolute value between d and other.
-func MaxAbs(d *Decimal, other *Decimal) *Decimal {
-	return d.MaxAbs(other)
+func MaxAbs[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).MaxAbs(D(other))
 }
 
 // MaxAbs returns the Decimal with the maximum absolute value between d and other.
@@ -163,8 +163,8 @@ func (d *Decimal) MaxAbs(other *Decimal) *Decimal {
 }
 
 // MinAbs returns the Decimal with the minimum absolute value between d and other.
-func MinAbs(d *Decimal, other *Decimal) *Decimal {
-	return d.MinAbs(other)
+func MinAbs[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).MinAbs(D(other))
 }
 
 // MinAbs returns the Decimal with the minimum absolute value between d and other.
@@ -178,8 +178,8 @@ func (d *Decimal) MinAbs(other *Decimal) *Decimal {
 
 // Clamp is a combination of minimum and maximum.
 // If d < min, returns min, and if d > max, returns max.
-func Clamp(d *Decimal, min *Decimal, max *Decimal) *Decimal {
-	return d.Clamp(min, max)
+func Clamp[DS DecimalSource](d DS, min DS, max DS) *Decimal {
+	return D(d).Clamp(D(min), D(max))
 }
 
 // Clamp is a combination of minimum and maximum.
@@ -189,8 +189,8 @@ func (d *Decimal) Clamp(min *Decimal, max *Decimal) *Decimal {
 }
 
 // ClampMin returns d, unless d is less than min, in which case returns min.
-func ClampMin(d *Decimal, min *Decimal) *Decimal {
-	return d.Max(min)
+func ClampMin[DS DecimalSource](d DS, min DS) *Decimal {
+	return D(d).Max(D(min))
 }
 
 // ClampMin returns d, unless d is less than min, in which case returns min.
@@ -199,8 +199,8 @@ func (d *Decimal) ClampMin(min *Decimal) *Decimal {
 }
 
 // ClampMax returns d, unless d is greater than max, in which case returns max.
-func ClampMax(d *Decimal, max *Decimal) *Decimal {
-	return d.Min(max)
+func ClampMax[DS DecimalSource](d DS, max DS) *Decimal {
+	return D(d).Min(D(max))
 }
 
 // ClampMax returns d, unless d is greater than max, in which case returns max.
@@ -210,8 +210,8 @@ func (d *Decimal) ClampMax(max *Decimal) *Decimal {
 
 // EqTolerance compares two Decimal values and returns true if they are equal within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two values.
-func EqTolerance(d *Decimal, other *Decimal, tolerance float64) bool {
-	return d.EqTolerance(other, tolerance)
+func EqTolerance[DS DecimalSource](d DS, other DS, tolerance float64) bool {
+	return D(d).EqTolerance(D(other), tolerance)
 }
 
 // EqTolerance compares two Decimal values and returns true if they are equal within a given tolerance.
@@ -242,8 +242,8 @@ func (d *Decimal) EqTolerance(other *Decimal, tolerance float64) bool {
 // CmpTolerance compares two Decimal values and returns -1 if d < other, 0 if d = other, 1 if d > other.
 // However, the two decimals are considered equal if they are within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two values.
-func CmpTolerance(d *Decimal, other *Decimal, tolerance float64) int {
-	return d.CmpTolerance(other, tolerance)
+func CmpTolerance[DS DecimalSource](d DS, other DS, tolerance float64) int {
+	return D(d).CmpTolerance(D(other), tolerance)
 }
 
 // CmpTolerance compares two Decimal values and returns -1 if d < other, 0 if d = other, 1 if d > other.
@@ -259,8 +259,8 @@ func (d *Decimal) CmpTolerance(other *Decimal, tolerance float64) int {
 
 // NeqTolerance compares two Decimal values and returns true if they are not equal within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two values.
-func NeqTolerance(d *Decimal, other *Decimal, tolerance float64) bool {
-	return d.NeqTolerance(other, tolerance)
+func NeqTolerance[DS DecimalSource](d DS, other DS, tolerance float64) bool {
+	return D(d).NeqTolerance(D(other), tolerance)
 }
 
 // NeqTolerance compares two Decimal values and returns true if they are not equal within a given tolerance.
@@ -272,8 +272,8 @@ func (d *Decimal) NeqTolerance(other *Decimal, tolerance float64) bool {
 // LtTolerance compares two Decimal values and returns true if d < other.
 // However, the two decimals are considered equal if they are within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two values
-func LtTolerance(d *Decimal, other *Decimal, tolerance float64) bool {
-	return d.LtTolerance(other, tolerance)
+func LtTolerance[DS DecimalSource](d DS, other DS, tolerance float64) bool {
+	return D(d).LtTolerance(D(other), tolerance)
 }
 
 // LtTolerance compares two Decimal values and returns true if d < other.
@@ -286,8 +286,8 @@ func (d *Decimal) LtTolerance(other *Decimal, tolerance float64) bool {
 // LtTolerance compares two Decimal values and returns true if d <= other.
 // However, the two decimals are considered equal if they are within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two values
-func LteTolerance(d *Decimal, other *Decimal, tolerance float64) bool {
-	return d.LteTolerance(other, tolerance)
+func LteTolerance[DS DecimalSource](d DS, other DS, tolerance float64) bool {
+	return D(d).LteTolerance(D(other), tolerance)
 }
 
 // LtTolerance compares two Decimal values and returns true if d <= other.
@@ -300,8 +300,8 @@ func (d *Decimal) LteTolerance(other *Decimal, tolerance float64) bool {
 // GtTolerance compares two Decimal values and returns true if d > other.
 // However, the two decimals are considered equal if they are within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two
-func GtTolerance(d *Decimal, other *Decimal, tolerance float64) bool {
-	return d.GtTolerance(other, tolerance)
+func GtTolerance[DS DecimalSource](d DS, other DS, tolerance float64) bool {
+	return D(d).GtTolerance(D(other), tolerance)
 }
 
 // GtTolerance compares two Decimal values and returns true if d > other.
@@ -314,8 +314,8 @@ func (d *Decimal) GtTolerance(other *Decimal, tolerance float64) bool {
 // GteTolerance compares two Decimal values and returns true if d >= other.
 // However, the two decimals are considered equal if they are within a given tolerance.
 // Tolerance is a relative tolerance, multiplied by the maximum of the magnitudes of the two values
-func GteTolerance(d *Decimal, other *Decimal, tolerance float64) bool {
-	return d.GteTolerance(other, tolerance)
+func GteTolerance[DS DecimalSource](d DS, other DS, tolerance float64) bool {
+	return D(d).GteTolerance(D(other), tolerance)
 }
 
 // GteTolerance compares two Decimal values and returns true if d >= other.
@@ -326,8 +326,8 @@ func (d *Decimal) GteTolerance(other *Decimal, tolerance float64) bool {
 }
 
 // PLog10 returns the base10 logarithm of non-negative decimals and returns 0 for negative decimals.
-func PLog10(d *Decimal) *Decimal {
-	return d.PLog10()
+func PLog10[DS DecimalSource](d DS) *Decimal {
+	return D(d).PLog10()
 }
 
 // PLog10 returns the base10 logarithm of non-negative decimals and returns 0 for negative decimals.
@@ -339,8 +339,8 @@ func (d *Decimal) PLog10() *Decimal {
 }
 
 // AbsLog10 returns the base10 logarithm of the absolute value of the decimal
-func AbsLog10(d *Decimal) *Decimal {
-	return d.AbsLog10()
+func AbsLog10[DS DecimalSource](d DS) *Decimal {
+	return D(d).AbsLog10()
 }
 
 // AbsLog10 returns the base10 logarithm of the absolute value of the decimal
@@ -355,8 +355,8 @@ func (d *Decimal) AbsLog10() *Decimal {
 }
 
 // Log10 returns the base10 logarithm of the decimal
-func Log10(d *Decimal) *Decimal {
-	return d.Log10()
+func Log10[DS DecimalSource](d DS) *Decimal {
+	return D(d).Log10()
 }
 
 // Log10 returns the base10 logarithm of the decimal
@@ -371,8 +371,8 @@ func (d *Decimal) Log10() *Decimal {
 }
 
 // Log returns the logarithm of the decimal to the given base
-func Log(d *Decimal, base *Decimal) *Decimal {
-	return d.Log(base)
+func Log[DS DecimalSource](d DS, base DS) *Decimal {
+	return D(d).Log(D(base))
 }
 
 // Log returns the logarithm of the decimal to the given base
@@ -394,8 +394,8 @@ func (d *Decimal) Log(base *Decimal) *Decimal {
 }
 
 // Ln returns the natural logarithm of the decimal
-func Ln(d *Decimal) *Decimal {
-	return d.Ln()
+func Ln[DS DecimalSource](d DS) *Decimal {
+	return D(d).Ln()
 }
 
 // Ln returns the natural logarithm of the decimal
@@ -414,8 +414,8 @@ func (d *Decimal) Ln() *Decimal {
 }
 
 // Log2 returns the base2 logarithm of the decimal
-func Log2(d *Decimal) *Decimal {
-	return d.Log2()
+func Log2[DS DecimalSource](d DS) *Decimal {
+	return D(d).Log2()
 }
 
 // Log2 returns the base2 logarithm of the decimal
@@ -434,8 +434,8 @@ func (d *Decimal) Log2() *Decimal {
 }
 
 // Pow returns the decimal raised to the power of the other decimal
-func Pow(d *Decimal, other *Decimal) *Decimal {
-	return d.Pow(other)
+func Pow[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Pow(D(other))
 }
 
 // Pow returns the decimal raised to the power of the other decimal
@@ -478,8 +478,8 @@ func (d *Decimal) Pow(other *Decimal) *Decimal {
 }
 
 // PowBase10 returns 10 raised to the power of the decimal
-func PowBase10(d *Decimal) *Decimal {
-	return d.PowBase10()
+func PowBase10[DS DecimalSource](d DS) *Decimal {
+	return D(d).PowBase10()
 }
 
 // PowBase10 returns 10 raised to the power of the decimal
@@ -522,8 +522,8 @@ func (d *Decimal) PowBase10() *Decimal {
 	return dFC_NN(1, 0, 1)
 }
 
-func PowBaseE(d *Decimal) *Decimal {
-	return d.PowBaseE()
+func PowBaseE[DS DecimalSource](d DS) *Decimal {
+	return D(d).PowBaseE()
 }
 func (d *Decimal) PowBaseE() *Decimal {
 	if d.mag < 0 {
@@ -540,22 +540,22 @@ func (d *Decimal) PowBaseE() *Decimal {
 	}
 }
 
-func PowBase(d *Decimal, base *Decimal) *Decimal {
-	return d.PowBase(base)
+func PowBaseN[DS DecimalSource](d DS, base DS) *Decimal {
+	return D(d).PowBaseN(D(base))
 }
-func (d *Decimal) PowBase(base *Decimal) *Decimal {
-	return D(d).Pow(base)
+func (d *Decimal) PowBaseN(base *Decimal) *Decimal {
+	return d.Pow(base)
 }
 
-func Root(d *Decimal, degree *Decimal) *Decimal {
-	return d.Root(degree)
+func Root[DS DecimalSource](d DS, degree DS) *Decimal {
+	return D(d).Root(D(degree))
 }
 func (d *Decimal) Root(degree *Decimal) *Decimal {
 	return d.Pow(degree.Recip())
 }
 
-func Sqrt(d *Decimal) *Decimal {
-	return d.Sqrt()
+func Sqrt[DS DecimalSource](d DS) *Decimal {
+	return D(d).Sqrt()
 }
 func (d *Decimal) Sqrt() *Decimal {
 	if d.layer == 0 {
@@ -570,8 +570,8 @@ func (d *Decimal) Sqrt() *Decimal {
 	}
 }
 
-func Factorial(d *Decimal) *Decimal {
-	return d.Factorial()
+func Factorial[DS DecimalSource](d DS) *Decimal {
+	return D(d).Factorial()
 }
 func (d *Decimal) Factorial() *Decimal {
 	if d.mag < 0 {
@@ -585,8 +585,8 @@ func (d *Decimal) Factorial() *Decimal {
 	}
 }
 
-func Gamma(d *Decimal) *Decimal {
-	return d.Gamma()
+func Gamma[DS DecimalSource](d DS) *Decimal {
+	return D(d).Gamma()
 }
 func (d *Decimal) Gamma() *Decimal {
 	if d.mag < 0 {
@@ -636,8 +636,8 @@ func (d *Decimal) Gamma() *Decimal {
 	}
 }
 
-func Abs(d *Decimal) *Decimal {
-	return d.Abs()
+func Abs[DS DecimalSource](d DS) *Decimal {
+	return D(d).Abs()
 }
 func (d *Decimal) Abs() *Decimal {
 	if d.sign == 0 {
@@ -647,15 +647,15 @@ func (d *Decimal) Abs() *Decimal {
 	}
 }
 
-func Neg(d *Decimal) *Decimal {
-	return d.Neg()
+func Neg[DS DecimalSource](d DS) *Decimal {
+	return D(d).Neg()
 }
 func (d *Decimal) Neg() *Decimal {
 	return dFC_NN(sign(-1*d.mag), d.layer, d.mag)
 }
 
-func Round(d *Decimal) *Decimal {
-	return d.Round()
+func Round[DS DecimalSource](d DS) *Decimal {
+	return D(d).Round()
 }
 func (d *Decimal) Round() *Decimal {
 	if d.mag < 0 {
@@ -667,8 +667,8 @@ func (d *Decimal) Round() *Decimal {
 	return D(d)
 }
 
-func Floor(d *Decimal) *Decimal {
-	return d.Floor()
+func Floor[DS DecimalSource](d DS) *Decimal {
+	return D(d).Floor()
 }
 func (d *Decimal) Floor() *Decimal {
 	if d.mag < 0 {
@@ -687,8 +687,8 @@ func (d *Decimal) Floor() *Decimal {
 	return D(d)
 }
 
-func Ceil(d *Decimal) *Decimal {
-	return d.Ceil()
+func Ceil[DS DecimalSource](d DS) *Decimal {
+	return D(d).Ceil()
 }
 func (d *Decimal) Ceil() *Decimal {
 	if d.mag < 0 {
@@ -707,8 +707,8 @@ func (d *Decimal) Ceil() *Decimal {
 	return D(d)
 }
 
-func Trunc(d *Decimal) *Decimal {
-	return d.Trunc()
+func Trunc[DS DecimalSource](d DS) *Decimal {
+	return D(d).Trunc()
 }
 func (d *Decimal) Trunc() *Decimal {
 	if d.mag < 0 {
@@ -720,8 +720,8 @@ func (d *Decimal) Trunc() *Decimal {
 	return D(d)
 }
 
-func Recip(d *Decimal) *Decimal {
-	return d.Recip()
+func Recip[DS DecimalSource](d DS) *Decimal {
+	return D(d).Recip()
 }
 func (d *Decimal) Recip() *Decimal {
 	if d.mag == 0 {
@@ -735,8 +735,8 @@ func (d *Decimal) Recip() *Decimal {
 	}
 }
 
-func Add(d *Decimal, other *Decimal) *Decimal {
-	return d.Add(other)
+func Add[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Add(D(other))
 }
 func (d *Decimal) Add(other *Decimal) *Decimal {
 	if (d.Eq(dInf) && other.Eq(dInf)) || (d.Eq(dNegInf) && other.Eq(dNegInf)) {
@@ -816,15 +816,15 @@ func (d *Decimal) Add(other *Decimal) *Decimal {
 	}
 }
 
-func Subtract(d *Decimal, other *Decimal) *Decimal {
-	return d.Subtract(other)
+func Subtract[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Subtract(D(other))
 }
 func (d *Decimal) Subtract(other *Decimal) *Decimal {
 	return d.Add(D(other).Neg())
 }
 
-func Multiply(d *Decimal, other *Decimal) *Decimal {
-	return d.Multiply(other)
+func Multiply[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Multiply(D(other))
 }
 func (d *Decimal) Multiply(other *Decimal) *Decimal {
 	// infinity * -infinity = -infinity
@@ -892,15 +892,15 @@ func (d *Decimal) Multiply(other *Decimal) *Decimal {
 	panic("Bad arguments to multiply: " + d.ToString() + ", " + other.ToString())
 }
 
-func Divide(d *Decimal, other *Decimal) *Decimal {
-	return d.Divide(other)
+func Divide[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Divide(D(other))
 }
 func (d *Decimal) Divide(other *Decimal) *Decimal {
 	return d.Multiply(other.Recip())
 }
 
-func Modulo(d *Decimal, other *Decimal) *Decimal {
-	return d.Modulo(other)
+func Modulo[DS DecimalSource](d DS, other DS) *Decimal {
+	return D(d).Modulo(D(other))
 }
 func (d *Decimal) Modulo(other *Decimal) *Decimal {
 	if other.Eq(dZero) {
@@ -929,15 +929,15 @@ func (d *Decimal) Modulo(other *Decimal) *Decimal {
 	return d.Subtract(d.Divide(d).Floor().Multiply(other))
 }
 
-func IsNaN(d *Decimal) bool {
-	return d.IsNaN()
+func IsNaN[DS DecimalSource](d DS) bool {
+	return D(d).IsNaN()
 }
 func (d *Decimal) IsNaN() bool {
 	return math.IsNaN(d.layer) || math.IsNaN(d.mag) || math.IsNaN(d.sign)
 }
 
-func IsInf(d *Decimal) bool {
-	return d.IsInf()
+func IsInf[DS DecimalSource](d DS) bool {
+	return D(d).IsInf()
 }
 func (d *Decimal) IsInf() bool {
 	return math.IsInf(d.layer, 0) || math.IsInf(d.mag, 0) || math.IsInf(d.sign, 0)
@@ -978,8 +978,9 @@ func dLambertW(d *Decimal, tol float64, principal bool) *Decimal {
 
 	panic("Iteration failed to converge")
 }
-func LambertW(d *Decimal, principal bool) *Decimal {
-	return d.LambertW(principal)
+
+func LambertW[DS DecimalSource](d DS, principal bool) *Decimal {
+	return D(d).LambertW(principal)
 }
 func (d *Decimal) LambertW(principal bool) *Decimal {
 	if d.Lt(D(-0.3678794411710499)) {
@@ -1009,8 +1010,8 @@ func (d *Decimal) LambertW(principal bool) *Decimal {
 	}
 }
 
-func IteratedLog(d *Decimal, base *Decimal, times float64, linear bool) *Decimal {
-	return d.IteratedLog(base, times, linear)
+func IteratedLog[DS DecimalSource](d DS, base DS, times float64, linear bool) *Decimal {
+	return D(d).IteratedLog(D(base), times, linear)
 }
 func (d *Decimal) IteratedLog(base *Decimal, times float64, linear bool) *Decimal {
 	if times < 0 {
@@ -1049,15 +1050,15 @@ func (d *Decimal) IteratedLog(base *Decimal, times float64, linear bool) *Decima
 	return result
 }
 
-func IteratedExp(d *Decimal, height float64, payload *Decimal, linear bool) *Decimal {
-	return d.IteratedExp(height, payload, linear)
+func IteratedExp[DS DecimalSource](d DS, height float64, payload DS, linear bool) *Decimal {
+	return D(d).IteratedExp(height, D(payload), linear)
 }
 func (d *Decimal) IteratedExp(height float64, payload *Decimal, linear bool) *Decimal {
 	return d.Tetrate(height, payload, linear)
 }
 
-func LayerAdd10(d *Decimal, diff *Decimal, linear bool) *Decimal {
-	return d.LayerAdd10(diff, linear)
+func LayerAdd10[DS DecimalSource](d DS, diff DS, linear bool) *Decimal {
+	return D(d).LayerAdd10(D(diff), linear)
 }
 func (d *Decimal) LayerAdd10(diff *Decimal, linear bool) *Decimal {
 	fDiff := D(diff).ToFloat64()
@@ -1122,8 +1123,8 @@ func (d *Decimal) LayerAdd10(diff *Decimal, linear bool) *Decimal {
 	return result
 }
 
-func LayerAdd(d *Decimal, diff *Decimal, base *Decimal, linear bool) *Decimal {
-	return d.LayerAdd(diff, base, linear)
+func LayerAdd[DS DecimalSource](d DS, diff DS, base DS, linear bool) *Decimal {
+	return D(d).LayerAdd(D(diff), D(base), linear)
 }
 func (d *Decimal) LayerAdd(diff *Decimal, base *Decimal, linear bool) *Decimal {
 	fDiff := diff.ToFloat64()
@@ -1218,8 +1219,8 @@ func (d *Decimal) slogInternal(base *Decimal, linear bool) *Decimal {
 	return decimalFromFloat64(result)
 }
 
-func Slog(d *Decimal, base *Decimal, iterations float64, linear bool) *Decimal {
-	return d.Slog(base, iterations, linear)
+func Slog[DS DecimalSource](d DS, base DS, iterations float64, linear bool) *Decimal {
+	return D(d).Slog(D(base), iterations, linear)
 }
 func (d *Decimal) Slog(base *Decimal, iterations float64, linear bool) *Decimal {
 	stepSize := 0.001
@@ -1254,8 +1255,8 @@ func (d *Decimal) Slog(base *Decimal, iterations float64, linear bool) *Decimal 
 	return decimalFromFloat64(result)
 }
 
-func Tetrate(value *Decimal, height float64, payload *Decimal, linear bool) *Decimal {
-	return value.Tetrate(height, payload, linear)
+func Tetrate[DS DecimalSource](value DS, height float64, payload DS, linear bool) *Decimal {
+	return D(value).Tetrate(height, D(payload), linear)
 }
 func (d *Decimal) Tetrate(height float64, payload *Decimal, linear bool) *Decimal {
 	if height == 1 {
@@ -1387,9 +1388,9 @@ func (d *Decimal) Tetrate(height float64, payload *Decimal, linear bool) *Decima
 	return payload
 }
 
-func Pentate(value *Decimal, height float64, payload *Decimal, linear bool) *Decimal {
+func Pentate[DS DecimalSource](value DS, height float64, payload DS, linear bool) *Decimal {
 	// TODO: not implemented yet
-	return value.Pentate(height, payload, linear)
+	return D(value).Pentate(height, D(payload), linear)
 }
 func (d *Decimal) Pentate(height float64, payload *Decimal, linear bool) *Decimal {
 	oldHeight := height
