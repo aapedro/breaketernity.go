@@ -522,9 +522,12 @@ func (d *Decimal) PowBase10() *Decimal {
 	return dFC_NN(1, 0, 1)
 }
 
+// PowBaseE returns e raised to the power of the decimal
 func PowBaseE[DS DecimalSource](d DS) *Decimal {
 	return D(d).PowBaseE()
 }
+
+// PowBaseE returns e raised to the power of the decimal
 func (d *Decimal) PowBaseE() *Decimal {
 	if d.mag < 0 {
 		return dFC_NN(1, 0, 1)
@@ -540,23 +543,32 @@ func (d *Decimal) PowBaseE() *Decimal {
 	}
 }
 
+// PowBaseN returns the base raised to the power of the decimal
 func PowBaseN[DS DecimalSource](d DS, base DS) *Decimal {
 	return D(d).PowBaseN(D(base))
 }
+
+// PowBaseN returns the base raised to the power of the decimal
 func (d *Decimal) PowBaseN(base *Decimal) *Decimal {
 	return d.Pow(base)
 }
 
+// Root returns the "degree"th root of the decimal
 func Root[DS DecimalSource](d DS, degree DS) *Decimal {
 	return D(d).Root(D(degree))
 }
+
+// Root returns the "degree"th root of the decimal
 func (d *Decimal) Root(degree *Decimal) *Decimal {
 	return d.Pow(degree.Recip())
 }
 
+// Sqrt returns the square root of the decimal
 func Sqrt[DS DecimalSource](d DS) *Decimal {
 	return D(d).Sqrt()
 }
+
+// Sqrt returns the square root of the decimal
 func (d *Decimal) Sqrt() *Decimal {
 	if d.layer == 0 {
 		return decimalFromFloat64(math.Sqrt(d.sign * d.mag))
@@ -570,9 +582,14 @@ func (d *Decimal) Sqrt() *Decimal {
 	}
 }
 
+// Factorial returns the factorial of the decimal
+// This function is extended to all real numbers via the Gamma function
 func Factorial[DS DecimalSource](d DS) *Decimal {
 	return D(d).Factorial()
 }
+
+// Factorial returns the factorial of the decimal
+// This function is extended to all real numbers via the Gamma function
 func (d *Decimal) Factorial() *Decimal {
 	if d.mag < 0 {
 		return d.Add(D(1)).Gamma()
@@ -585,9 +602,16 @@ func (d *Decimal) Factorial() *Decimal {
 	}
 }
 
+// Gamma returns the Gamma function of the decimal
+// Gamma(x) is defined as the integral of t^(x-1) * e^-t dt from t = 0 to t = infinity
+// This is equivalent to (x-1)! for nonnegative integers
 func Gamma[DS DecimalSource](d DS) *Decimal {
 	return D(d).Gamma()
 }
+
+// Gamma returns the Gamma function of the decimal
+// Gamma(x) is defined as the integral of t^(x-1) * e^-t dt from t = 0 to t = infinity
+// This is equivalent to (x-1)! for nonnegative integers
 func (d *Decimal) Gamma() *Decimal {
 	if d.mag < 0 {
 		return d.Recip()
@@ -636,9 +660,12 @@ func (d *Decimal) Gamma() *Decimal {
 	}
 }
 
+// Abs returns the absolute value of the decimal
 func Abs[DS DecimalSource](d DS) *Decimal {
 	return D(d).Abs()
 }
+
+// Abs returns the absolute value of the decimal
 func (d *Decimal) Abs() *Decimal {
 	if d.sign == 0 {
 		return dFC_NN(0, d.layer, d.mag)
@@ -647,16 +674,22 @@ func (d *Decimal) Abs() *Decimal {
 	}
 }
 
+// Neg returns the negative of the decimal
 func Neg[DS DecimalSource](d DS) *Decimal {
 	return D(d).Neg()
 }
+
+// Neg returns the negative of the decimal
 func (d *Decimal) Neg() *Decimal {
 	return dFC_NN(sign(-1*d.mag), d.layer, d.mag)
 }
 
+// Round rounds the decimal to the nearest integer
 func Round[DS DecimalSource](d DS) *Decimal {
 	return D(d).Round()
 }
+
+// Round rounds the decimal to the nearest integer
 func (d *Decimal) Round() *Decimal {
 	if d.mag < 0 {
 		return dFC_NN(0, 0, 0)
@@ -667,9 +700,12 @@ func (d *Decimal) Round() *Decimal {
 	return D(d)
 }
 
+// Floor rounds the decimal down to the nearest integer
 func Floor[DS DecimalSource](d DS) *Decimal {
 	return D(d).Floor()
 }
+
+// Floor rounds the decimal down to the nearest integer
 func (d *Decimal) Floor() *Decimal {
 	if d.mag < 0 {
 		if d.sign == -1 {
@@ -687,9 +723,12 @@ func (d *Decimal) Floor() *Decimal {
 	return D(d)
 }
 
+// Ceil rounds the decimal up to the nearest integer
 func Ceil[DS DecimalSource](d DS) *Decimal {
 	return D(d).Ceil()
 }
+
+// Ceil rounds the decimal up to the nearest integer
 func (d *Decimal) Ceil() *Decimal {
 	if d.mag < 0 {
 		if d.sign == -1 {
@@ -707,9 +746,14 @@ func (d *Decimal) Ceil() *Decimal {
 	return D(d)
 }
 
+// Trunc returns the integer part of the Decimal
+// Behaves like floor on positive numbers and ceil on negative numbers
 func Trunc[DS DecimalSource](d DS) *Decimal {
 	return D(d).Trunc()
 }
+
+// Trunc returns the integer part of the Decimal.
+// Behaves like floor on positive numbers and ceil on negative numbers
 func (d *Decimal) Trunc() *Decimal {
 	if d.mag < 0 {
 		return dFC_NN(0, 0, 0)
@@ -720,9 +764,12 @@ func (d *Decimal) Trunc() *Decimal {
 	return D(d)
 }
 
+// Recip returns the reciprocal (1/x) of the decimal
 func Recip[DS DecimalSource](d DS) *Decimal {
 	return D(d).Recip()
 }
+
+// Recip returns the reciprocal (1/x) of the decimal
 func (d *Decimal) Recip() *Decimal {
 	if d.mag == 0 {
 		return dFC_NN(math.NaN(), math.NaN(), math.NaN())
@@ -735,9 +782,12 @@ func (d *Decimal) Recip() *Decimal {
 	}
 }
 
+// Add returns the sum of the decimal and other
 func Add[DS DecimalSource](d DS, other DS) *Decimal {
 	return D(d).Add(D(other))
 }
+
+// Add returns the sum of the decimal and other
 func (d *Decimal) Add(other *Decimal) *Decimal {
 	if (d.Eq(dInf) && other.Eq(dInf)) || (d.Eq(dNegInf) && other.Eq(dNegInf)) {
 		return dFC_NN(math.NaN(), math.NaN(), math.NaN())
@@ -816,16 +866,22 @@ func (d *Decimal) Add(other *Decimal) *Decimal {
 	}
 }
 
+// Subtract returns the difference between the decimal and other
 func Subtract[DS DecimalSource](d DS, other DS) *Decimal {
 	return D(d).Subtract(D(other))
 }
+
+// Subtract returns the difference between the decimal and other
 func (d *Decimal) Subtract(other *Decimal) *Decimal {
 	return d.Add(D(other).Neg())
 }
 
+// Multiply returns the product of the decimal and other
 func Multiply[DS DecimalSource](d DS, other DS) *Decimal {
 	return D(d).Multiply(D(other))
 }
+
+// Multiply returns the product of the decimal and other
 func (d *Decimal) Multiply(other *Decimal) *Decimal {
 	// infinity * -infinity = -infinity
 	if (d.Eq(dInf) && other.Eq(dNegInf)) || (d.Eq(dNegInf) && other.Eq(dInf)) {
@@ -892,16 +948,24 @@ func (d *Decimal) Multiply(other *Decimal) *Decimal {
 	panic("Bad arguments to multiply: " + d.ToString() + ", " + other.ToString())
 }
 
+// Divide returns the quotient of the decimal and other
 func Divide[DS DecimalSource](d DS, other DS) *Decimal {
 	return D(d).Divide(D(other))
 }
+
+// Divide returns the quotient of the decimal and other
 func (d *Decimal) Divide(other *Decimal) *Decimal {
 	return d.Multiply(other.Recip())
 }
 
+// Modulo returns the remainder of d divided by other
+// Uses the truncated division modulo, which is the same as Go's native modulo operator (%)
 func Modulo[DS DecimalSource](d DS, other DS) *Decimal {
 	return D(d).Modulo(D(other))
 }
+
+// Modulo returns the remainder of d divided by other
+// Uses the truncated division modulo, which is the same as Go's native modulo operator (%)
 func (d *Decimal) Modulo(other *Decimal) *Decimal {
 	if other.Eq(dZero) {
 		return dFC_NN(0, 0, 0)
@@ -929,16 +993,22 @@ func (d *Decimal) Modulo(other *Decimal) *Decimal {
 	return d.Subtract(d.Divide(d).Floor().Multiply(other))
 }
 
+// IsNan returns true if the decimal is NaN
 func IsNaN[DS DecimalSource](d DS) bool {
 	return D(d).IsNaN()
 }
+
+// IsNaN returns true if the decimal is NaN
 func (d *Decimal) IsNaN() bool {
 	return math.IsNaN(d.layer) || math.IsNaN(d.mag) || math.IsNaN(d.sign)
 }
 
+// IsInf returns true if the decimal is either positive or negative infinity
 func IsInf[DS DecimalSource](d DS) bool {
 	return D(d).IsInf()
 }
+
+// IsInf returns true if the decimal is either positive or negative infinity
 func (d *Decimal) IsInf() bool {
 	return math.IsInf(d.layer, 0) || math.IsInf(d.mag, 0) || math.IsInf(d.sign, 0)
 }
@@ -979,9 +1049,20 @@ func dLambertW(d *Decimal, tol float64, principal bool) *Decimal {
 	panic("Iteration failed to converge")
 }
 
+// LambertW is an implementation of the Lambert W function, also called the omega function or the product logarithm.
+// Solution to W(X) == x*e^x
+// This is a multi-valued function in the complex plane but only two "branches" matter for real numbers. W0 (principal) and W-1 (non-principal)
+// W0 works for any number >= -1/e, but W-1 only works for nonpositive numbers >= -1/e
+// The principal paremeter determines which branch to use
 func LambertW[DS DecimalSource](d DS, principal bool) *Decimal {
 	return D(d).LambertW(principal)
 }
+
+// LambertW is an implementation of the Lambert W function, also called the omega function or the product logarithm.
+// Solution to W(X) == x*e^x
+// This is a multi-valued function in the complex plane but only two "branches" matter for real numbers. W0 (principal) and W-1 (non-principal)
+// W0 works for any number >= -1/e, but W-1 only works for nonpositive numbers >= -1/e
+// The principal paremeter determines which branch to use
 func (d *Decimal) LambertW(principal bool) *Decimal {
 	if d.Lt(D(-0.3678794411710499)) {
 		return dFC_NN(math.NaN(), math.NaN(), math.NaN())
@@ -1010,9 +1091,18 @@ func (d *Decimal) LambertW(principal bool) *Decimal {
 	}
 }
 
+// IteratedLog returns the result of applying log(base) 'times' times
+// Works with negative and positive real heights. Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func IteratedLog[DS DecimalSource](d DS, base DS, times float64, linear bool) *Decimal {
 	return D(d).IteratedLog(D(base), times, linear)
 }
+
+// IteratedLog returns the result of applying log(base) 'times' times
+// Works with negative and positive real heights. Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func (d *Decimal) IteratedLog(base *Decimal, times float64, linear bool) *Decimal {
 	if times < 0 {
 		return Tetrate(base, -times, d, linear)
@@ -1050,16 +1140,36 @@ func (d *Decimal) IteratedLog(base *Decimal, times float64, linear bool) *Decima
 	return result
 }
 
+// IteratedExp returns the result of applying exp(base) 'height' times.
+// Works with negative and positive real heights. Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
+// Identical to Tetrate
 func IteratedExp[DS DecimalSource](d DS, height float64, payload DS, linear bool) *Decimal {
 	return D(d).IteratedExp(height, D(payload), linear)
 }
+
+// IteratedExp returns the result of applying exp(base) 'height' times.
+// Works with negative and positive real heights. Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
+// Identical to Tetrate
 func (d *Decimal) IteratedExp(height float64, payload *Decimal, linear bool) *Decimal {
 	return d.Tetrate(height, payload, linear)
 }
 
+// LayerAdd10 adds/removes layers from a Decimal, even fractional layers. Very similar to tetrate base 10 and iterated log base 10
+// Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func LayerAdd10[DS DecimalSource](d DS, diff DS, linear bool) *Decimal {
 	return D(d).LayerAdd10(D(diff), linear)
 }
+
+// LayerAdd10 adds/removes layers from a Decimal, even fractional layers. Very similar to tetrate base 10 and iterated log base 10
+// Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func (d *Decimal) LayerAdd10(diff *Decimal, linear bool) *Decimal {
 	fDiff := D(diff).ToFloat64()
 	result := decimalFromDecimal(d)
@@ -1123,9 +1233,18 @@ func (d *Decimal) LayerAdd10(diff *Decimal, linear bool) *Decimal {
 	return result
 }
 
+// LayerAdd is like adding "diff" to the number's slog(base) representation. Very similar to tetrate base 'base' and iterated log base 'base'
+// Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func LayerAdd[DS DecimalSource](d DS, diff DS, base DS, linear bool) *Decimal {
 	return D(d).LayerAdd(D(diff), D(base), linear)
 }
+
+// LayerAdd is like adding "diff" to the number's slog(base) representation. Very similar to tetrate base 'base' and iterated log base 'base'
+// Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func (d *Decimal) LayerAdd(diff *Decimal, base *Decimal, linear bool) *Decimal {
 	fDiff := diff.ToFloat64()
 	if base.Gt(D(1)) && base.Lte(D(1.44466786100976613366)) {
@@ -1219,9 +1338,22 @@ func (d *Decimal) slogInternal(base *Decimal, linear bool) *Decimal {
 	return decimalFromFloat64(result)
 }
 
+// Slog is also called "super-logarithm". One of tetration's inverses, tells you what size pwoer tower you'd have to tetrate 'base' to get 'd'
+// By definition, will never be higher than 1.8e308 in this lib, since a power tower 1.8e308 numbers tall is the largest representable number
+// Accepts a number of iterations, and uses binary search to hone in on the true value
+// Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func Slog[DS DecimalSource](d DS, base DS, iterations float64, linear bool) *Decimal {
 	return D(d).Slog(D(base), iterations, linear)
 }
+
+// Slog is also called "super-logarithm". One of tetration's inverses, tells you what size pwoer tower you'd have to tetrate 'base' to get 'd'
+// By definition, will never be higher than 1.8e308 in this lib, since a power tower 1.8e308 numbers tall is the largest representable number
+// Accepts a number of iterations, and uses binary search to hone in on the true value
+// Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but reverts to a linear approximation for bases > 10
+// If you want to use the linear approximation for all bases, set linear parameter to true
 func (d *Decimal) Slog(base *Decimal, iterations float64, linear bool) *Decimal {
 	stepSize := 0.001
 	hasChangedDirectionsOnce := false
@@ -1255,9 +1387,20 @@ func (d *Decimal) Slog(base *Decimal, iterations float64, linear bool) *Decimal 
 	return decimalFromFloat64(result)
 }
 
-func Tetrate[DS DecimalSource](value DS, height float64, payload DS, linear bool) *Decimal {
-	return D(value).Tetrate(height, D(payload), linear)
+// Tetrate is the result of exponentiating 'd' to 'payload' 'height' times in a row
+// If payload != 1, this is the same as 'iterated exponentiation'
+// Works with negative and positive real heights. Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but it reverts to the linear approximation for bases > 10
+// If you want to use the linear approximation even for bases <= 10, set the linear parameter to true
+func Tetrate[DS DecimalSource](d DS, height float64, payload DS, linear bool) *Decimal {
+	return D(d).Tetrate(height, D(payload), linear)
 }
+
+// Tetrate is the result of exponentiating 'd' to 'payload' 'height' times in a row
+// If payload != 1, this is the same as 'iterated exponentiation'
+// Works with negative and positive real heights. Tetration for non-integer heights does not have a single agreed-upon definition
+// So this library uses an analytic approximation for bases <= 10, but it reverts to the linear approximation for bases > 10
+// If you want to use the linear approximation even for bases <= 10, set the linear parameter to true
 func (d *Decimal) Tetrate(height float64, payload *Decimal, linear bool) *Decimal {
 	if height == 1 {
 		return Pow(d, payload)
@@ -1388,10 +1531,12 @@ func (d *Decimal) Tetrate(height float64, payload *Decimal, linear bool) *Decima
 	return payload
 }
 
+// Pentate is the result of tetrating 'height' times in a row
 func Pentate[DS DecimalSource](value DS, height float64, payload DS, linear bool) *Decimal {
-	// TODO: not implemented yet
 	return D(value).Pentate(height, D(payload), linear)
 }
+
+// Pentate is the result of tetrating 'height' times in a row
 func (d *Decimal) Pentate(height float64, payload *Decimal, linear bool) *Decimal {
 	oldHeight := height
 	height = math.Trunc(height)
