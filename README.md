@@ -62,7 +62,7 @@ Methods that return *Decimal can be chained.
 
 ```go
 x.Divide(y).Add(z).Multiply(9).Floor();
-x.Multiply(D("1.23456780123456789e+9")).Add(D(9876.5432321)).dividedBy(D("4444562598.111772")).Ceil();
+x.Multiply(D("1.23456780123456789e+9")).Add(D(9876.5432321)).Divide(D("4444562598.111772")).Ceil();
 ```
 
 A list of functions is provided earlier in this readme, or you can read through math.go for a more detailed list.
