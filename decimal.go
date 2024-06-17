@@ -66,7 +66,8 @@ func decimalFromDecimal(d *Decimal) *Decimal {
 }
 
 func decimalFromFloat64(f float64) *Decimal {
-	return &Decimal{sign: sign(f), layer: 0, mag: math.Abs(f)}
+	d := Decimal{sign: sign(f), layer: 0, mag: math.Abs(f)}
+	return d.Normalize()
 }
 
 func decimalFromString(s string, linearhyper4 bool) *Decimal {
